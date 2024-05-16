@@ -21,16 +21,16 @@ class Command(BaseCommand):
         try:
             with open(file_path, 'r') as f:
                 csv_rows = csv.DictReader(f)
-                try:
-                    for row_num, row in enumerate(csv_rows):
+                for row_num, row in enumerate(csv_rows):
+                    try:
                         batch.append(self._create_restaurant_data(row))
-                        if len(batch) >= batch_size:
-                            RestaurantData.objects.bulk_create(batch)
-                            batch.clear()
-                    if batch:
+                    except (ValueError, KeyError) as e:
+                        raise CommandError(f"Could not parse the row {row_num + 1}. Error: {e}")
+                    if len(batch) >= batch_size:
                         RestaurantData.objects.bulk_create(batch)
-                except (ValueError, KeyError) as e:
-                    self.stderr.write(f"Could not parse the row {row_num + 1}. Error: {e}")
+                        batch.clear()
+                if batch:
+                    RestaurantData.objects.bulk_create(batch)
         except FileNotFoundError:
             raise CommandError(
                 f"I could not find the dataset file at this path: {str(file_path)}. Remember to add the file inside the"
@@ -45,8 +45,8 @@ class Command(BaseCommand):
             date=datetime.strptime(row["date"], '%Y-%m-%d').date(),
             planned_hours=int(row["planned_hours"]),
             actual_hours=int(row["actual_hours"]),
-            hours_difference=int(row["planned_hours"]) - int(row["actual_hours"]),
+            hours_difference=RestaurantData.get_hours_difference(int(row["planned_hours"]), int(row["actual_hours"])),
             budget=float(row["budget"]),
             sells=float(row["sells"]),
-            money_difference=float(row["budget"]) - float(row["sells"])
+            money_difference=RestaurantData.get_money_difference(float(row["budget"]), float(row["sells"]))
         )
