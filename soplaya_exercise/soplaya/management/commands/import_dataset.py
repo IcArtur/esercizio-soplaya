@@ -2,7 +2,7 @@ import csv
 import os
 from datetime import datetime
 
-from api.models import RestaurantData
+from soplaya.models import RestaurantData
 from backend import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -20,7 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         file_path = options.get('csv_path', None)
         if not file_path:
-            base_dir = settings.BASE_DIR
+            base_dir = settings.BASE_DIR.parent
             file_path = os.path.join(base_dir, 'dataset.csv')
         else:
             file_path = os.path.abspath(file_path)

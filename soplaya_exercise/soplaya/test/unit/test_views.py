@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from api.models import RestaurantData
+from soplaya.models import RestaurantData
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
