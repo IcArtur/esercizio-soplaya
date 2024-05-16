@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7m7i-(ia9zo4(x^&k)(^n2i-!v%f9h&@s-i6r6-pfw!b_+x*eo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'soplaya_exercise.urls'
+ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'soplaya_exercise.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
