@@ -1,0 +1,5 @@
+date,restaurant,planned_hours,actual_hours,budget,sells
+2016-01-01,Copacabana,141,176,4025.65,2801.33
+2016-01-01,Noodle Bar,108,76,2455.75,3875.81
+2016-01-01,Jack Rabbit,30,156,116.99,3967.95
+2016-01-02,Copacabana,189,135,611.8,197.57
