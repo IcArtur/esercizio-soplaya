@@ -12,11 +12,19 @@ from django.db import transaction
 class Command(BaseCommand):
     help = "Import restaurant data from a CSV file"
 
+    def add_arguments(self, parser):
+        parser.add_argument('csv_path', type=str, nargs='?')
+        parser.add_argument('batch_size', type=str, nargs='?')
+
+
     def handle(self, *args, **options):
-        base_dir = settings.BASE_DIR
-        # We could get the batch and filename/path as param if needed.
-        file_path = os.path.join(base_dir, 'dataset.csv')
-        batch_size = 500
+        file_path = options.get('csv_path', None)
+        if not file_path:
+            base_dir = settings.BASE_DIR
+            file_path = os.path.join(base_dir, 'dataset.csv')
+        else:
+            file_path = os.path.abspath(file_path)
+        batch_size = 500 if not options.get('batch_size', None) else options['batch_size']
         batch = []
         try:
             with open(file_path, 'r') as f:
